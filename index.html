@@ -113,7 +113,6 @@ const db = getFirestore(app);
 
 let count = 0;
 
-// ✅ FIXED FUNCTION
 async function loadCount() {
   const ref = doc(db, "shame", "counter");
   const snap = await getDoc(ref);
@@ -125,14 +124,13 @@ async function loadCount() {
     await setDoc(ref, { value: 0 });
   }
 
-  // ✅ FIXED ">" symbol + brackets
   if (count > 0) {
     document.getElementById("counterBox").style.display = "block";
   }
 
   
 document.getElementById("counter").innerHTML =
-  'Mick hated Runa <span class="count-number">' + count + '</span> times';
+  'MICK HATED RUNA <span class="count-number">' + count + '</span> TIMES';
 
 }
 
@@ -164,7 +162,7 @@ window.answer = async function (choice) {
     document.getElementById("counterBox").style.display = "block";
 
     document.getElementById("counter").innerText =
-      "Mick hated Runa " + count + " times";
+      "MICK HATED RUNA " + count + " TIMES";
   }
 };
 
@@ -177,7 +175,7 @@ window.answer = async function (choice) {
 
 <header>
   <div class="header-left">
-    <h1>Runa's Legendary Site</h1>
+    <h1>RUNA'S LEGENDARY SITE</h1>
     <p>Welcome to my VERY wholesome website!</p>
   </div>
 
