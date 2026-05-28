@@ -39,18 +39,43 @@
     background-color: #c63c5d;
   }
 
+  /* Popup background */
+  .popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+  }
+
+  /* Popup box */
+  .popup-content {
+    background: white;
+    padding: 20px;
+    margin: 15% auto;
+    width: 300px;
+    border-radius: 10px;
+  }
+
 </style>
 
 <script>
   function showPopup() {
-    let answer = prompt("Do you love me? (YES / yes / no)");
+    document.getElementById("popup").style.display = "block";
+  }
 
-    if (answer === "YES" || answer === "yes") {
-      alert("Aww, I love you too! ❤️");
-    } else if (answer === "no") {
-      alert("That's okay... maybe someday 😢");
-    } else {
-      alert("Please answer YES, yes, or no!");
+  function answer(choice) {
+    if (choice === "YES") {
+      alert("I knew it 😄❤️");
+    } 
+    else if (choice === "yes") {
+      alert("ok so no enthusiasm 😐");
+    } 
+    else if (choice === "no") {
+      alert("Wow okay 😭");
+      window.close(); // might not work unless tab was opened by script
     }
   }
 </script>
@@ -67,6 +92,16 @@
 <div class="box">
   <h2>Human Verification needed</h2>
   <button onclick="showPopup()">OK</button>
+</div>
+
+<!-- POPUP -->
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <h3>Do you love me?</h3>
+    <button onclick="answer('YES')">YES</button>
+    <button onclick="answer('yes')">yes</button>
+    <button onclick="answer('no')">no</button>
+  </div>
 </div>
 
 </body>
