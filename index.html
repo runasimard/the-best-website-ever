@@ -76,35 +76,35 @@ header {
 
 
 <script type="module">
-  
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// Close popup when clicking outside
 window.addEventListener("click", function (event) {
   const popup = document.getElementById("popup");
-  const content = document.querySelector(".popup-content");
 
   if (event.target === popup) {
     popup.style.display = "none";
   }
 });
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyDQqYVloL2KEZBpYDS2AqIW35zuZqS4bBw",
+  authDomain: "best-website-f6384.firebaseapp.com",
+  projectId: "best-website-f6384",
+  storageBucket: "best-website-f6384.firebasestorage.app",
+  messagingSenderId: "219068026223",
+  appId: "1:219068026223:web:949b3a757982e24e486c9a",
+  measurementId: "G-E79CGXSEP1"
+};
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDQqYVloL2KEZBpYDS2AqIW35zuZqS4bBw",
-    authDomain: "best-website-f6384.firebaseapp.com",
-    projectId: "best-website-f6384",
-    storageBucket: "best-website-f6384.firebasestorage.app",
-    messagingSenderId: "219068026223",
-    appId: "1:219068026223:web:949b3a757982e24e486c9a",
-    measurementId: "G-E79CGXSEP1"
-  };
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+let count = 0;
 
-  let count = 0;
-
-  
+// ✅ FIXED FUNCTION
 async function loadCount() {
   const ref = doc(db, "shame", "counter");
   const snap = await getDoc(ref);
@@ -116,7 +116,8 @@ async function loadCount() {
     await setDoc(ref, { value: 0 });
   }
 
-  if (count > 0)
+  // ✅ FIXED ">" symbol + brackets
+  if (count > 0) {
     document.getElementById("counterBox").style.display = "block";
   }
 
@@ -124,36 +125,38 @@ async function loadCount() {
     "Mick hated Runa " + count + " times";
 }
 
-  window.onload = loadCount;
+window.onload = loadCount;
 
-  window.showPopup = function () {
-    document.getElementById("popup").style.display = "block";
-  };
+window.showPopup = function () {
+  document.getElementById("popup").style.display = "block";
+  document.getElementById("question").innerHTML = "Do you love me?";
+};
 
-  window.answer = async function (choice) {
-    const text = document.getElementById("question");
+window.answer = async function (choice) {
+  const text = document.getElementById("question");
 
-    if (choice === "YES") {
-      text.innerHTML = "i knew it 😄❤️";
-    } 
-    else if (choice === "yes") {
-      text.innerHTML = "ok so u hate me no enthusiasm 😐";
-    } 
-    
-else if (choice === "no") {
-  text.innerHTML = "now why would you pick that... shame on you";
+  if (choice === "YES") {
+    text.innerHTML = "i knew it 😄❤️";
+  } 
+  else if (choice === "yes") {
+    text.innerHTML = "ok so u hate me no enthusiasm 😐";
+  } 
+  else if (choice === "no") {
+    text.innerHTML = "now why would you pick that... shame on you";
 
-  count++;
+    count++;
 
-  const ref = doc(db, "shame", "counter");
-  await setDoc(ref, { value: count });
+    const ref = doc(db, "shame", "counter");
+    await setDoc(ref, { value: count });
 
-  document.getElementById("counterBox").style.display = "block";
+    // ✅ reveal counter
+    document.getElementById("counterBox").style.display = "block";
 
-  document.getElementById("counter").innerText =
-    "Mick hated Runa " + count + " times";
-}
-  };
+    document.getElementById("counter").innerText =
+      "Mick hated Runa " + count + " times";
+  }
+};
+
 </script>
 
 </head>
