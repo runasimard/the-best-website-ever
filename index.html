@@ -56,27 +56,72 @@
     width: 300px;
     border-radius: 10px;
   }
-
 </style>
 
-<script>
-  function showPopup() {
-    document.getElementById("popup").style.display = "block";
+<!-- ✅ FIREBASE + LOGIC -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDQqYVloL2KEZBpYDS2AqIW35zuZqS4bBw",
+    authDomain: "best-website-f6384.firebaseapp.com",
+    projectId: "best-website-f6384",
+    storageBucket: "best-website-f6384.firebasestorage.app",
+    messagingSenderId: "219068026223",
+    appId: "1:219068026223:web:949b3a757982e24e486c9a",
+    measurementId: "G-E79CGXSEP1"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let count = 0;
+
+  // Load counter from Firebase
+  async function loadCount() {
+    const ref = doc(db, "shame", "counter");
+    const snap = await getDoc(ref);
+
+    if (snap.exists()) {
+      count = snap.data().value;
+    } else {
+      count = 0;
+      await setDoc(ref, { value: 0 });
+    }
+
+    document.getElementById("counter").innerText =
+      "Mick hated Runa " + count + " times 😡";
   }
 
-  function answer(choice) {
+  window.onload = loadCount;
+
+  // Make functions global so buttons work
+  window.showPopup = function () {
+    document.getElementById("popup").style.display = "block";
+  };
+
+  window.answer = async function (choice) {
     const text = document.getElementById("question");
 
     if (choice === "YES") {
-      text.innerHTML = "I knew it 😄❤️";
+      text.innerHTML = "i knew it 😄❤️";
     } 
     else if (choice === "yes") {
       text.innerHTML = "ok so u hate me no enthusiasm 😐";
     } 
     else if (choice === "no") {
-      text.innerHTML = "Wow okay 😭";
+      text.innerHTML = "now why would you pick that... shame on you";
+
+      count++;
+
+      const ref = doc(db, "shame", "counter");
+      await setDoc(ref, { value: count });
+
+      document.getElementById("counter").innerText =
+        "Mick hated Runa " + count + " times";
     }
-  }
+  };
 </script>
 
 </head>
@@ -93,7 +138,12 @@
   <button onclick="showPopup()">OK</button>
 </div>
 
-<!-- CUSTOM POPUP -->
+<!-- ✅ GLOBAL SHAME COUNTER -->
+<div class="box">
+  <h2 id="counter">Loading shame...</h2>
+</div>
+
+<!-- POPUP -->
 <div id="popup" class="popup">
   <div class="popup-content">
     <h3 id="question">Do you love me?</h3>
@@ -105,3 +155,4 @@
 
 </body>
 </html>
+``
