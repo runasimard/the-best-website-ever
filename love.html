@@ -37,7 +37,6 @@ header {
   text-shadow: 0 0 5px rgba(255, 0, 80, 0.6);
 }
 
-
 .main {
   margin-top: 100px;
 }
@@ -45,9 +44,8 @@ header {
 .big-text {
   font-size: 30px;
   color: #E34A6F;
-  font-family: Figtree, sans-serif;
 }
-  
+
 .content-row {
   display: flex;
   justify-content: center;
@@ -64,6 +62,7 @@ header {
   border-radius: 10px;
   width: 500px;
 }
+
 .battle-container {
   display: flex;
   flex-direction: column;
@@ -74,7 +73,6 @@ header {
   background: #fff0f5;
   border: 2px solid #E34A6F;
   border-radius: 12px;
-
   width: 220px;
   flex: 1;
 
@@ -92,23 +90,16 @@ header {
   font-size: 40px;
   font-weight: bold;
   margin: 10px 0;
+  color: #E34A6F;
+  animation: pulseGlow 2s infinite;
 }
 
 .battle-box button {
   background: none;
   border: none;
   font-size: 38px;
-  line-height: 1;
-
   cursor: pointer;
   transition: transform 0.15s ease;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-top: 5px;
-  padding: 0;
 }
 
 .battle-box button:hover {
@@ -119,28 +110,18 @@ header {
   transform: scale(0.92);
 }
 
-  @keyframes pulseGlow {
-  0% {
-    text-shadow: 0 0 5px #ff4d88;
-  }
-
-  50% {
-    text-shadow:
-      0 0 10px #ff4d88,
-      0 0 20px #ff99bb;
-  }
-
-  100% {
-    text-shadow: 0 0 5px #ff4d88;
-  }
+@keyframes pulseGlow {
+  0% { text-shadow: 0 0 5px #ff4d88; }
+  50% { text-shadow: 0 0 10px #ff4d88, 0 0 20px #ff99bb; }
+  100% { text-shadow: 0 0 5px #ff4d88; }
 }
 
-.battle-box p {
-  font-size: 40px;
-  font-weight: bold;
-  margin: 10px 0;
-  color: #E34A6F;
-  animation: pulseGlow 2s infinite;
+.winner {
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 700;
+  color: gold;
+  min-height: 24px;
 }
 </style>
 
@@ -171,10 +152,7 @@ async function loadCount() {
   const ref = doc(db, "shame", "counter");
   const snap = await getDoc(ref);
 
-  let count = 0;
-  if (snap.exists()) {
-    count = snap.data().value;
-  }
+  let count = snap.exists() ? snap.data().value : 0;
 
   if (count > 0) {
     document.getElementById("counterBox").style.display = "block";
@@ -183,26 +161,31 @@ async function loadCount() {
   document.getElementById("counter").innerHTML =
     '🚨 MICK HATED RUNA <span class="count-number">' + count + '</span> TIMES 🚨';
 }
-  async function loadBattle() {
-  const runaRef = doc(db, "battle", "runa");
-  const mickRef = doc(db, "battle", "mick");
 
-  const runaSnap = await getDoc(runaRef);
-  const mickSnap = await getDoc(mickRef);
+async function loadBattle() {
+  const runaSnap = await getDoc(doc(db, "battle", "runa"));
+  const mickSnap = await getDoc(doc(db, "battle", "mick"));
 
-  let runaCount = 0;
-  let mickCount = 0;
-
-  if (runaSnap.exists()) {
-    runaCount = runaSnap.data().value;
-  }
-
-  if (mickSnap.exists()) {
-    mickCount = mickSnap.data().value;
-  }
+  let runaCount = runaSnap.exists() ? runaSnap.data().value : 0;
+  let mickCount = mickSnap.exists() ? mickSnap.data().value : 0;
 
   document.getElementById("runaCount").innerText = runaCount;
   document.getElementById("mickCount").innerText = mickCount;
+
+  const runaLeader = document.getElementById("runaLeader");
+  const mickLeader = document.getElementById("mickLeader");
+
+  runaLeader.innerText = "";
+  mickLeader.innerText = "";
+
+  if (runaCount > mickCount) {
+    runaLeader.innerText = "👑 Leading";
+  } else if (mickCount > runaCount) {
+    mickLeader.innerText = "👑 Leading";
+  } else {
+    runaLeader.innerText = "🤝 Tie";
+    mickLeader.innerText = "🤝 Tie";
+  }
 }
 
 window.addPoint = async function(person) {
@@ -221,15 +204,10 @@ window.addPoint = async function(person) {
   loadBattle();
 };
 
-
-
-
 window.onload = () => {
   loadCount();
-
   loadBattle();
 };
-
 </script>
 
 </head>
@@ -248,27 +226,22 @@ window.onload = () => {
 </header>
 
 <div class="main">
-  <p class="big-text">CONFIRMED. IT'S OFFICIAL YOU'RE OBSESSED WITH ME </p>
+  <p class="big-text">CONFIRMED. IT'S OFFICIAL YOU'RE OBSESSED WITH ME</p>
   <p>you may celebrate accordingly</p>
 </div>
-  
 
 <div class="content-row">
 
   <div class="music-box">
     <h3>What Runa is listening to:</h3>
 
-
     <iframe
-      data-testid="embed-iframe"
       style="border-radius:12px"
       src="https://open.spotify.com/embed/playlist/566OyyLICNBUXSXN0URb7O?utm_source=generator"
       width="100%"
       height="352"
-      frameBorder="0"
-      allowfullscreen=""
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy">
+      frameborder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
     </iframe>
   </div>
 
@@ -277,21 +250,20 @@ window.onload = () => {
     <div class="battle-box">
       <h2>Runa Kisses</h2>
       <p id="runaCount">0</p>
-      <button onclick="addPoint('runa')">
-        💋
-      </button>
+      <div class="winner" id="runaLeader"></div>
+      <button onclick="addPoint('runa')">💋</button>
     </div>
 
     <div class="battle-box">
       <h2>Mick Kisses</h2>
       <p id="mickCount">0</p>
-      <button onclick="addPoint('mick')">
-        💋
-      </button>
+      <div class="winner" id="mickLeader"></div>
+      <button onclick="addPoint('mick')">💋</button>
     </div>
 
   </div>
 
 </div>
+
 </body>
 </html>
