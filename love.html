@@ -37,7 +37,6 @@ header {
   text-shadow: 0 0 5px rgba(255, 0, 80, 0.6);
 }
 
-
 .main {
   margin-top: 100px;
 }
@@ -45,9 +44,8 @@ header {
 .big-text {
   font-size: 30px;
   color: #E34A6F;
-  font-family: Figtree, sans-serif;
 }
-  
+
 .music-box {
   margin-top: 40px;
   padding: 20px;
@@ -55,35 +53,54 @@ header {
   background: #fff0f5;
   border: 2px solid #E34A6F;
   border-radius: 10px;
-  width:500px;
+  width: 500px;
 }
+
 .music-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+/* 🔀 clean emoji button */
 .shuffle-btn {
   background: none;
   border: none;
-  font-size: 28px;   /* bigger emoji */
+  font-size: 28px;
   cursor: pointer;
   padding: 5px;
   transition: transform 0.15s ease;
 }
-
 .shuffle-btn:hover {
-  transform: scale(1.2);  /* subtle grow on hover */
+  transform: scale(1.2);
+}
+.shuffle-btn:active {
+  transform: scale(0.9);
 }
 
-  
+/* ✅ double iframe system */
+.player-stack {
+  position: relative;
+  width: 100%;
+  height: 352px;
+}
 
-#spotifyPlayer {
+.player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 12px;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.35s ease;
+  background: #fff0f5;
 }
 
-
+.player.active {
+  opacity: 1;
+}
 </style>
 
 <script type="module">
@@ -102,6 +119,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// 🔢 counter
 async function loadCount() {
   const ref = doc(db, "shame", "counter");
   const snap = await getDoc(ref);
@@ -120,7 +138,6 @@ async function loadCount() {
 }
 
 // 🎧 playlists
-
 const playlists = [
   "https://open.spotify.com/embed/playlist/566OyyLICNBUXSXN0URb7O?utm_source=generator",
   "https://open.spotify.com/embed/playlist/67MYiGXVGnPkTYY0t4CnJM?utm_source=generator",
@@ -129,10 +146,11 @@ const playlists = [
   "https://open.spotify.com/embed/playlist/0WAUFDbW9H8FJARmD1TWW5?utm_source=generator"
 ];
 
-
 let lastIndex = -1;
+let showingA = true;
 let isFirstLoad = true;
 
+// 🔀 smooth shuffle
 window.shufflePlaylist = function () {
   let randomIndex;
 
@@ -142,33 +160,32 @@ window.shufflePlaylist = function () {
 
   lastIndex = randomIndex;
 
-  const player = document.getElementById("spotifyPlayer");
+  const playerA = document.getElementById("playerA");
+  const playerB = document.getElementById("playerB");
 
-  // ✅ FIRST LOAD (no animation glitch)
+  const nextPlayer = showingA ? playerB : playerA;
+  const currentPlayer = showingA ? playerA : playerB;
+
+  nextPlayer.src = playlists[randomIndex];
+
   if (isFirstLoad) {
-    player.src = playlists[randomIndex];
-    player.style.opacity = 1;
+    nextPlayer.classList.add("active");
     isFirstLoad = false;
+    showingA = !showingA;
     return;
   }
 
-  // ✅ normal clicks
-  player.style.opacity = 0;
+  nextPlayer.classList.add("active");
+  currentPlayer.classList.remove("active");
 
-  setTimeout(() => {
-    player.src = playlists[randomIndex];
-    player.style.opacity = 1;
-  }, 200);
+  showingA = !showingA;
 };
 
-
-// ✅ ONE clean onload
-
+// 🚀 load
 window.onload = () => {
   loadCount();
-  shufflePlaylist();  // ✅ randomly pick playlist every refresh
+  shufflePlaylist();
 };
-
 </script>
 
 </head>
@@ -187,35 +204,22 @@ window.onload = () => {
 </header>
 
 <div class="main">
-  <p class="big-text">CONFIRMED. IT'S OFFICIAL. YOU'RE OBSSESSED WITH ME </p>
+  <p class="big-text">CONFIRMED. IT'S OFFICIAL. YOU'RE OBSESSED WITH ME</p>
   <p>you may celebrate accordingly</p>
 </div>
-  
-
 
 <div class="music-box">
-
   <div class="music-header">
     <h3>What Runa is listening to:</h3>
     <button class="shuffle-btn" onclick="shufflePlaylist()">🔀</button>
   </div>
 
-  <iframe 
-    id="spotifyPlayer"
-    style="border-radius:12px"
-  src="https://open.spotify.com/embed/playlist/566OyyLICNBUXSXN0URb7O?utm_source=generator"
-    width="100%"
-    height="352"
-    frameborder="0"
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-    loading="lazy">
-  </iframe>
-
+  <!-- ✅ DOUBLE PLAYER -->
+  <div class="player-stack">
+    <iframe id="playerA" class="player"></iframe>
+    <iframe id="playerB" class="player"></iframe>
+  </div>
 </div>
-
-
-
-
 
 </body>
 </html>
