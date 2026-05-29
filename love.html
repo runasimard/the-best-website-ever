@@ -77,9 +77,12 @@ header {
 }
 
   
+
 #spotifyPlayer {
+  opacity: 0;
   transition: opacity 0.25s ease;
 }
+
 
 </style>
 
@@ -127,8 +130,8 @@ const playlists = [
 ];
 
 
-
 let lastIndex = -1;
+let isFirstLoad = true;
 
 window.shufflePlaylist = function () {
   let randomIndex;
@@ -141,6 +144,15 @@ window.shufflePlaylist = function () {
 
   const player = document.getElementById("spotifyPlayer");
 
+  // ✅ FIRST LOAD (no animation glitch)
+  if (isFirstLoad) {
+    player.src = playlists[randomIndex];
+    player.style.opacity = 1;
+    isFirstLoad = false;
+    return;
+  }
+
+  // ✅ normal clicks
   player.style.opacity = 0;
 
   setTimeout(() => {
