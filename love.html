@@ -57,38 +57,28 @@ header {
   flex-wrap: wrap;
 }
 
-/* MUSIC */
-.music-box {
-  padding: 20px;
-  background: #fff0f5;
-  border: 2px solid #E34A6F;
-  border-radius: 10px;
-  width: 500px;
-}
-
-/* BATTLE SIDE */
+/* IMPORTANT FIX */
+.music-box,
 .battle-container {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* KEY FIX */
-  height: 100%; /* KEY FIX */
-  gap: 20px;
 }
 
-/* BOX */
-.battle-box {
-  background: #fff0f5;
-  border: 2px solid #E34A6F;
-  border-radius: 12px;
-  width: 220px;
-
-  display: flex;
+/* music stays normal */
+.music-box {
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+}
 
-  padding: 20px 0;
-  gap: 10px;
+/* battle side becomes full-height column */
+.battle-container {
+  flex-direction: column;
+  justify-content: space-between;
+  width: 220px;
+}
+
+/* IMPORTANT: make battle boxes fill evenly */
+.battle-box {
+  flex: 1;
 }
 
 /* TEXT */
