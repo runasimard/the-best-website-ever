@@ -31,7 +31,7 @@ header {
 }
 
 .count-number {
-  color: #000000;
+  color: #000;
   font-weight: 900;
   font-size: 22px;
   text-shadow: 0 0 5px rgba(255, 0, 80, 0.6);
@@ -115,14 +115,6 @@ header {
   50% { text-shadow: 0 0 10px #ff4d88, 0 0 20px #ff99bb; }
   100% { text-shadow: 0 0 5px #ff4d88; }
 }
-
-.winner {
-  margin-top: 6px;
-  font-size: 18px;
-  font-weight: 700;
-  color: gold;
-  min-height: 24px;
-}
 </style>
 
 <script type="module">
@@ -137,7 +129,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDQqYVloL2KEZBpYDS2AqIW35zuZqS4bBw",
+  apiKey: "AIzaSyDQY...",
   authDomain: "best-website-f6384.firebaseapp.com",
   projectId: "best-website-f6384",
   storageBucket: "best-website-f6384.firebasestorage.app",
@@ -172,19 +164,18 @@ async function loadBattle() {
   document.getElementById("runaCount").innerText = runaCount;
   document.getElementById("mickCount").innerText = mickCount;
 
-  const runaLeader = document.getElementById("runaLeader");
-  const mickLeader = document.getElementById("mickLeader");
+  const runaTitle = document.getElementById("runaTitle");
+  const mickTitle = document.getElementById("mickTitle");
 
-  runaLeader.innerText = "";
-  mickLeader.innerText = "";
+  // reset titles
+  runaTitle.innerText = "Runa Kisses";
+  mickTitle.innerText = "Mick Kisses";
 
+  // crown logic
   if (runaCount > mickCount) {
-    runaLeader.innerText = "👑 Leading";
+    runaTitle.innerText = "👑 Runa Kisses";
   } else if (mickCount > runaCount) {
-    mickLeader.innerText = "👑 Leading";
-  } else {
-    runaLeader.innerText = "🤝 Tie";
-    mickLeader.innerText = "🤝 Tie";
+    mickTitle.innerText = "👑 Mick Kisses";
   }
 }
 
@@ -248,16 +239,14 @@ window.onload = () => {
   <div class="battle-container">
 
     <div class="battle-box">
-      <h2>Runa Kisses</h2>
+      <h2 id="runaTitle">Runa Kisses</h2>
       <p id="runaCount">0</p>
-      <div class="winner" id="runaLeader"></div>
       <button onclick="addPoint('runa')">💋</button>
     </div>
 
     <div class="battle-box">
-      <h2>Mick Kisses</h2>
+      <h2 id="mickTitle">Mick Kisses</h2>
       <p id="mickCount">0</p>
-      <div class="winner" id="mickLeader"></div>
       <button onclick="addPoint('mick')">💋</button>
     </div>
 
