@@ -35,10 +35,9 @@ header {
   color: #000;
   font-weight: 900;
   font-size: 22px;
-  text-shadow: 0 0 5px rgba(255, 0, 80, 0.6);
 }
 
-/* MAIN TEXT */
+/* MAIN */
 .main {
   margin-top: 100px;
 }
@@ -52,12 +51,13 @@ header {
 .content-row {
   display: flex;
   justify-content: center;
-  align-items: stretch; /* IMPORTANT FIX */
+  align-items: stretch;
   gap: 30px;
   margin-top: 40px;
   flex-wrap: wrap;
+}
 
-/* MUSIC BOX */
+/* MUSIC */
 .music-box {
   padding: 20px;
   background: #fff0f5;
@@ -66,16 +66,16 @@ header {
   width: 500px;
 }
 
-/* BATTLE */
+/* BATTLE SIDE */
 .battle-container {
   display: flex;
   flex-direction: column;
+  justify-content: space-between; /* KEY FIX */
+  height: 100%; /* KEY FIX */
   gap: 20px;
-
-  justify-content: space-between; /* spreads boxes vertically */
-  height: 100%; /* helps stretch alignment */
 }
-  
+
+/* BOX */
 .battle-box {
   background: #fff0f5;
   border: 2px solid #E34A6F;
@@ -88,39 +88,30 @@ header {
   justify-content: center;
 
   padding: 20px 0;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* remove default spacing */
-.battle-box h2,
-.battle-box p {
-  margin: 0;
-}
-
-/* text */
+/* TEXT */
 .battle-box h2 {
+  margin: 0;
   color: #E34A6F;
 }
 
 .battle-box p {
+  margin: 0;
   font-size: 40px;
   font-weight: bold;
   color: #E34A6F;
-  animation: pulseGlow 2s infinite;
 }
 
-/* button */
+/* BUTTON */
 .battle-box button {
   background: none;
   border: none;
   font-size: 38px;
   cursor: pointer;
-  line-height: 1;
   transition: transform 0.15s ease;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  line-height: 1;
 }
 
 .battle-box button:hover {
@@ -129,13 +120,6 @@ header {
 
 .battle-box button:active {
   transform: scale(0.92);
-}
-
-/* glow animation */
-@keyframes pulseGlow {
-  0% { text-shadow: 0 0 5px #ff4d88; }
-  50% { text-shadow: 0 0 10px #ff4d88, 0 0 20px #ff99bb; }
-  100% { text-shadow: 0 0 5px #ff4d88; }
 }
 </style>
 
@@ -162,49 +146,31 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function loadCount() {
-  const ref = doc(db, "shame", "counter");
-  const snap = await getDoc(ref);
-
-  let count = snap.exists() ? snap.data().value : 0;
-
-  if (count > 0) {
-    document.getElementById("counterBox").style.display = "block";
-  }
-
-  document.getElementById("counter").innerHTML =
-    '🚨 MICK HATED RUNA <span class="count-number">' + count + '</span> TIMES 🚨';
-}
-
 async function loadBattle() {
   const runaSnap = await getDoc(doc(db, "battle", "runa"));
   const mickSnap = await getDoc(doc(db, "battle", "mick"));
 
-  let runaCount = runaSnap.exists() ? runaSnap.data().value : 0;
-  let mickCount = mickSnap.exists() ? mickSnap.data().value : 0;
+  let runa = runaSnap.exists() ? runaSnap.data().value : 0;
+  let mick = mickSnap.exists() ? mickSnap.data().value : 0;
 
-  document.getElementById("runaCount").innerText = runaCount;
-  document.getElementById("mickCount").innerText = mickCount;
+  document.getElementById("runaCount").innerText = runa;
+  document.getElementById("mickCount").innerText = mick;
 }
 
 window.addPoint = async function(person) {
   const ref = doc(db, "battle", person);
-
   const snap = await getDoc(ref);
 
   if (!snap.exists()) {
     await setDoc(ref, { value: 1 });
   } else {
-    await updateDoc(ref, {
-      value: increment(1)
-    });
+    await updateDoc(ref, { value: increment(1) });
   }
 
   loadBattle();
 };
 
 window.onload = () => {
-  loadCount();
   loadBattle();
 };
 </script>
@@ -218,29 +184,20 @@ window.onload = () => {
     <h1>RUNA'S FANPAGE</h1>
     <p>Only accessible to her OG 1 fan</p>
   </div>
-
-  <div id="counterBox" class="header-counter" style="display:none;">
-    <h3 id="counter">Loading shame...</h3>
-  </div>
 </header>
 
 <div class="main">
   <p class="big-text">CONFIRMED. IT'S OFFICIAL. YOU'RE OBSESSED WITH ME</p>
-  <p>you may celebrate accordingly</p>
 </div>
 
 <div class="content-row">
 
   <div class="music-box">
     <h3>What Runa is listening to:</h3>
-
     <iframe
       style="border-radius:12px"
-      src="https://open.spotify.com/embed/playlist/566OyyLICNBUXSXN0URb7O?utm_source=generator"
-      width="100%"
-      height="352"
-      frameborder="0"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+      src="https://open.spotify.com/embed/playlist/566OyyLICNBUXSXN0URb7O"
+      width="100%" height="352">
     </iframe>
   </div>
 
