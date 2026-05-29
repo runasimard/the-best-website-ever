@@ -52,11 +52,10 @@ header {
 .content-row {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: stretch; /* IMPORTANT FIX */
   gap: 30px;
   margin-top: 40px;
   flex-wrap: wrap;
-}
 
 /* MUSIC BOX */
 .music-box {
@@ -72,9 +71,11 @@ header {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  align-items: center;
-}
 
+  justify-content: space-between; /* spreads boxes vertically */
+  height: 100%; /* helps stretch alignment */
+}
+  
 .battle-box {
   background: #fff0f5;
   border: 2px solid #E34A6F;
