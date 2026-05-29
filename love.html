@@ -10,6 +10,7 @@ body {
   text-align: center;
 }
 
+/* HEADER */
 header {
   background-color: #E34A6F;
   color: white;
@@ -37,6 +38,7 @@ header {
   text-shadow: 0 0 5px rgba(255, 0, 80, 0.6);
 }
 
+/* MAIN TEXT */
 .main {
   margin-top: 100px;
 }
@@ -46,15 +48,17 @@ header {
   color: #E34A6F;
 }
 
+/* CONTENT LAYOUT */
 .content-row {
   display: flex;
   justify-content: center;
-  align-items: stretch;
+  align-items: flex-start;
   gap: 30px;
   margin-top: 40px;
   flex-wrap: wrap;
 }
 
+/* MUSIC BOX */
 .music-box {
   padding: 20px;
   background: #fff0f5;
@@ -63,10 +67,12 @@ header {
   width: 500px;
 }
 
+/* BATTLE */
 .battle-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: center;
 }
 
 .battle-box {
@@ -74,49 +80,46 @@ header {
   border: 2px solid #E34A6F;
   border-radius: 12px;
   width: 220px;
-  flex: 1;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  gap: 10px; /* 👈 THIS is the key fix */
-  padding: 15px 0;
+  padding: 20px 0;
+  gap: 12px;
 }
 
-/* 👑 centered title layout */
+/* remove default spacing */
+.battle-box h2,
+.battle-box p {
+  margin: 0;
+}
+
+/* text */
 .battle-box h2 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
   color: #E34A6F;
-}
-
-/* crown styling */
-.crown {
-  font-size: 22px;
-  line-height: 1;
 }
 
 .battle-box p {
   font-size: 40px;
   font-weight: bold;
-  margin: 10px 0;
   color: #E34A6F;
   animation: pulseGlow 2s infinite;
 }
 
+/* button */
 .battle-box button {
   background: none;
   border: none;
   font-size: 38px;
   cursor: pointer;
+  line-height: 1;
   transition: transform 0.15s ease;
 
-  margin-top: 4px; /* small nudge for perfect centering */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .battle-box button:hover {
@@ -127,6 +130,7 @@ header {
   transform: scale(0.92);
 }
 
+/* glow animation */
 @keyframes pulseGlow {
   0% { text-shadow: 0 0 5px #ff4d88; }
   50% { text-shadow: 0 0 10px #ff4d88, 0 0 20px #ff99bb; }
@@ -180,22 +184,6 @@ async function loadBattle() {
 
   document.getElementById("runaCount").innerText = runaCount;
   document.getElementById("mickCount").innerText = mickCount;
-
-  const runaTitle = document.getElementById("runaTitle");
-  const mickTitle = document.getElementById("mickTitle");
-
-  const runaText = "Runa Kisses";
-  const mickText = "Mick Kisses";
-
-  runaTitle.innerHTML = runaText;
-  mickTitle.innerHTML = mickText;
-
-  if (runaCount > mickCount) {
-    runaTitle.innerHTML = `<span class="crown">👑</span> ${runaText}`;
-  } 
-  else if (mickCount > runaCount) {
-    mickTitle.innerHTML = `<span class="crown">👑</span> ${mickText}`;
-  }
 }
 
 window.addPoint = async function(person) {
@@ -258,13 +246,13 @@ window.onload = () => {
   <div class="battle-container">
 
     <div class="battle-box">
-      <h2 id="runaTitle">Runa Kisses</h2>
+      <h2>Runa Kisses</h2>
       <p id="runaCount">0</p>
       <button onclick="addPoint('runa')">💋</button>
     </div>
 
     <div class="battle-box">
-      <h2 id="mickTitle">Mick Kisses</h2>
+      <h2>Mick Kisses</h2>
       <p id="mickCount">0</p>
       <button onclick="addPoint('mick')">💋</button>
     </div>
