@@ -109,10 +109,17 @@ function loadRandomPlaylist() {
   const randomIndex = Math.floor(Math.random() * playlists.length);
   const chosen = playlists[randomIndex];
 
-  document.getElementById("spotifyEmbed").innerHTML = `
-    ${chosen}
-    </iframe>
-  `;
+ 
+document.getElementById("spotifyEmbed").innerHTML = `
+  <iframe style="border-radius:12px"
+    src="${chosen}"
+    width="100%"
+    height="152"
+    frameBorder="0"
+    allowfullscreen=""
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+  </iframe>
+
 }
 
 window.onload = () => {
@@ -138,7 +145,7 @@ window.onload = () => {
 </header>
 
 <div class="main">
-  <p class="big-text">CONFIRMED. IT'S OFFICIAL YOU'RE OBSSESSED WITH ME</p>
+  <p class="big-text">CONFIRMED. IT'S OFFICIAL YOU'RE OBSESSED WITH ME</p>
   <p>you may celebrate accordingly</p>
 </div>
 
