@@ -92,7 +92,29 @@ async function loadCount() {
   document.getElementById("counter").innerHTML =
     '🚨 MICK HATED RUNA <span class="count-number">' + count + '</span> TIMES 🚨';
 }
-  
+  function loadRandomPlaylist() {
+  const playlists = [
+    "https://open.spotify.com/embed/playlist/0WAUFDbW9H8FJARmD1TWW5?utm_source=generator",
+    "https://open.spotify.com/embed/playlist/4TfbfHIKyGPZPAjxN3sliX?utm_source=generator",
+    "https://open.spotify.com/embed/playlist/2hfj8uhISKcVkp2U9Suxkd?utm_source=generator",
+    "https://open.spotify.com/embed/playlist/4TfbfHIKyGPZPAjxN3sliX?utm_source=generator",
+    "https://open.spotify.com/embed/playlist/5dCq1zDPBA2VCaKSqsrQte?utm_source=generator",
+    "https://open.spotify.com/embed/playlist/4HVWNB0WITrw57qSiizTcP?utm_source=generator"
+  ];
+
+  const randomIndex = Math.floor(Math.random() * playlists.length);
+  const chosen = playlists[randomIndex];
+
+  document.getElementById("spotifyEmbed").innerHTML = `
+    <iframe 
+      data-testid="embed-iframe"
+      style="border-radius:12px"
+      src="${chosen}"
+      width="100%"
+      height="352"
+      frameborder="0"
+      allowfullscreen=""
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in
 function loadSong() {
   const songElement = document.getElementById("song");
 
@@ -104,6 +126,7 @@ function loadSong() {
 window.onload = () => {
   loadCount();
   loadSong();
+  loadRandomPlaylist();
 };
 
 </script>
@@ -131,10 +154,7 @@ window.onload = () => {
 
 <div class="music-box">
   <h3>What Runa is listening to:</h3>
-<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/566OyyLICNBUXSXN0URb7O?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-
-
-
+<div id="spotifyEmbed"></div>
 
 </body>
 </html>
