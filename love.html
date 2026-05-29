@@ -45,25 +45,31 @@ header {
 .big-text {
   font-size: 30px;
   color: #E34A6F;
-  font: Figtree, sans-serif;
+  font-family: Figtree, sans-serif;
 }
   
-.music-box {
+.content-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
   margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.music-box {
   padding: 20px;
-  display: inline-block;
   background: #fff0f5;
   border: 2px solid #E34A6F;
   border-radius: 10px;
-  width:500px;
-}
-.battle-container {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 40px;
+  width: 500px;
 }
 
+.battle-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 .battle-box {
   background: #fff0f5;
   border: 2px solid #E34A6F;
@@ -94,6 +100,30 @@ header {
 
 .battle-box button:hover {
   background: #c63c5e;
+}
+
+  @keyframes pulseGlow {
+  0% {
+    text-shadow: 0 0 5px #ff4d88;
+  }
+
+  50% {
+    text-shadow:
+      0 0 10px #ff4d88,
+      0 0 20px #ff99bb;
+  }
+
+  100% {
+    text-shadow: 0 0 5px #ff4d88;
+  }
+}
+
+.battle-box p {
+  font-size: 40px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #E34A6F;
+  animation: pulseGlow 2s infinite;
 }
 </style>
 
@@ -207,24 +237,45 @@ window.onload = () => {
 </div>
   
 
-<div class="music-box">
-  <h3>What Runa is listening to:</h3>
-   <p id="song"></p>
-<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/566OyyLICNBUXSXN0URb7O?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-<div class="battle-container">
+<div class="content-row">
 
-  <div class="battle-box">
-    <h2>💋 Runa Kisses</h2>
-    <p id="runaCount">0</p>
-    <button onclick="addPoint('runa')">Kiss Runa</button>
+  <div class="music-box">
+    <h3>What Runa is listening to:</h3>
+
+    <p id="song"></p>
+
+    <iframe
+      data-testid="embed-iframe"
+      style="border-radius:12px"
+      src="https://open.spotify.com/embed/playlist/566OyyLICNBUXSXN0URb7O?utm_source=generator"
+      width="100%"
+      height="352"
+      frameBorder="0"
+      allowfullscreen=""
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy">
+    </iframe>
   </div>
 
-  <div class="battle-box">
-    <h2>💋 Mick Kisses</h2>
-    <p id="mickCount">0</p>
-    <button onclick="addPoint('mick')">Kiss Mick</button>
+  <div class="battle-container">
+
+    <div class="battle-box">
+      <h2>💋 Runa Kisses</h2>
+      <p id="runaCount">0</p>
+      <button onclick="addPoint('runa')">
+        Kiss Runa
+      </button>
+    </div>
+
+    <div class="battle-box">
+      <h2>💋 Mick Kisses</h2>
+      <p id="mickCount">0</p>
+      <button onclick="addPoint('mick')">
+        Kiss Mick
+      </button>
+    </div>
+
   </div>
-</div>
 
 </div>
 </body>
