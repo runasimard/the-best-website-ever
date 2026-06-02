@@ -69,6 +69,8 @@ header {
   border: 2px solid #E34A6F;
   border-radius: 10px;
   width: 350px;
+     max-height: 400px;      /* adjust height if you want bigger/smaller */
+  overflow-y: auto;   
 }
 
 .visit-box input {
@@ -92,7 +94,12 @@ header {
   margin-top: 15px;
   border-collapse: collapse;
 }
-
+.visit-box thead th {
+  position: sticky;
+  top: 0;
+  background: #ffe5ee;
+  z-index: 1;
+}
 .visit-box th,
 .visit-box td {
   border: 1px solid #E34A6F;
