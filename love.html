@@ -63,6 +63,45 @@ header {
   border-radius: 10px;
   width: 500px;
 }
+  .visit-box {
+  padding: 20px;
+  background: #fff0f5;
+  border: 2px solid #E34A6F;
+  border-radius: 10px;
+  width: 350px;
+}
+
+.visit-box input {
+  padding: 8px;
+  border: 1px solid #E34A6F;
+  border-radius: 5px;
+}
+
+.visit-box button {
+  background: #E34A6F;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.visit-box table {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+
+.visit-box th,
+.visit-box td {
+  border: 1px solid #E34A6F;
+  padding: 8px;
+}
+
+.visit-box th {
+  background: #ffe5ee;
+}
 
 .battle-container {
   display: flex;
@@ -135,7 +174,10 @@ import {
   getDoc,
   setDoc,
   updateDoc,
-  increment
+  increment,
+  collection,
+  addDoc,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -202,10 +244,51 @@ window.addPoint = async function(person) {
 
   loadBattle();
 };
+ async function loadDates() {
+  const snapshot = await getDocs(collection(db, "visitDates"));
+
+  const body = document.getElementById("datesBody");
+  if (!body) return;
+
+  body.innerHTML = "";
+
+  const dates = [];
+
+  snapshot.forEach((docSnap) => {
+    dates.push(docSnap.data().date);
+  });
+
+  // newest first
+  dates.reverse();
+
+  dates.forEach((date) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${date}</td>`;
+    body.appendChild(row);
+  });
+}
+
+window.addDate = async function() {
+  const input = document.getElementById("visitDate");
+
+  if (!input.value) {
+    alert("Pick a date first!");
+    return;
+  }
+
+  await addDoc(collection(db, "visitDates"), {
+    date: input.value
+  });
+
+  input.value = "";
+
+  loadDates();
+};
 
 window.onload = () => {
   loadCount();
   loadBattle();
+  loadDates();
 };
 </script>
 
@@ -246,6 +329,21 @@ window.onload = () => {
       loading="lazy">
     </iframe>
   </div>
+ <div class="visit-box">
+  <h3>Dates Ideas 💕</h3>
+
+  <input type="date" id="visitDate">
+  <button onclick="addDate()">Add</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody id="datesBody"></tbody>
+  </table>
+</div>
 
   <div class="battle-container">
 
@@ -260,6 +358,7 @@ window.onload = () => {
       <p id="mickCount">0</p>
       <button onclick="addPoint('mick')">💋</button>
     </div>
+
 
   </div>
 
